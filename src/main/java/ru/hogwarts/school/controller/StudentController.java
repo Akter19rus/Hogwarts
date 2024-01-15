@@ -48,11 +48,12 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public Student deleteStudent(@PathVariable Long id) {
-        return studentService.deleteStudent(id);
+    public ResponseEntity deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/byAge/{age}")
+    @GetMapping("age")
     public Collection<Student> getAgeStudents(@PathVariable int age) {
         return studentService.getAgeStudent(age);
     }

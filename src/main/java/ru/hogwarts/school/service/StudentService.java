@@ -4,10 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 @Service
 public interface StudentService {
     public Student createStudent(Student student);
@@ -16,7 +13,7 @@ public interface StudentService {
 
     public Student editStudent(Student student);
 
-    public Student deleteStudent(long id);
+    public void deleteStudent(long id);
 
     public Collection<Student> getAllStudents();
 

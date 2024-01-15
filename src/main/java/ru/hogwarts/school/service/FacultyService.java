@@ -11,7 +11,7 @@ public interface FacultyService {
 
     public Faculty editFaculty(Faculty faculty);
 
-    public Faculty deleteFaculty(long id);
+    public void deleteFaculty(long id);
 
     public Collection<Faculty> getAllFacultys();
 
