@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
-public class FacultyServiceImpl implements FacultyService {
+public class FacultyServiceImpl {
     @Autowired
     private final FacultyRepository facultyRepository;
 
@@ -19,7 +19,6 @@ public class FacultyServiceImpl implements FacultyService {
 
     public Faculty createFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
-
     }
 
     public Faculty findFaculty(long id) {
@@ -34,11 +33,11 @@ public class FacultyServiceImpl implements FacultyService {
         facultyRepository.deleteById(id);
     }
 
-    public Collection<Faculty> getAllFacultys() {
+    public Collection<Faculty> getAllFacultet() {
         return facultyRepository.findAll();
     }
 
-    public Collection<Faculty> getColorFacultys(String color) {
+    public Collection<Faculty> getColorFacultet(String color) {
 
         return facultyRepository.findAll().stream()
                 .filter(e -> e.getColor().equals(color))

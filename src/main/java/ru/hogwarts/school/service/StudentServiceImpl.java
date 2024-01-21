@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl {
     @Autowired
     private final StudentRepository studentRepository;
 
