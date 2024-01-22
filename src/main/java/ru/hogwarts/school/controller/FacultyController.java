@@ -4,19 +4,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.service.FacultyServiceImpl;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("faculty")
 public class FacultyController {
-    private final FacultyService facultyService;
+    private final FacultyServiceImpl facultyService;
 
-    public FacultyController(FacultyService facultyService) {
+    public FacultyController(FacultyServiceImpl facultyService) {
         this.facultyService = facultyService;
     }
 
@@ -31,7 +28,7 @@ public class FacultyController {
 
     @GetMapping
     public ResponseEntity<Collection<Faculty>> getAllFacultys() {
-        return ResponseEntity.ok(facultyService.getAllFacultys());
+        return ResponseEntity.ok(facultyService.getAllFacultet());
     }
 
     @PostMapping
@@ -56,6 +53,6 @@ public class FacultyController {
 
     @GetMapping("color")
     public Collection<Faculty> getColorFaculty(@PathVariable String color) {
-        return facultyService.getColorFacultys(color);
+        return facultyService.getColorFacultet(color);
     }
 }
