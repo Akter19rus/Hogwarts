@@ -1,8 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "pring.jpa.hibernate.ddl-auto",
-      "type": "java.lang.String",
-      "description": "Description for pring.jpa.hibernate.ddl-auto."
-  }
-] }
