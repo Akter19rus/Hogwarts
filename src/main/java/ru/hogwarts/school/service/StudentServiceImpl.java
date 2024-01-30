@@ -1,21 +1,20 @@
 package ru.hogwarts.school.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl {
     @Autowired
     private final StudentRepository studentRepository;
-
-    public StudentServiceImpl(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
 
     public Student createStudent(Student student) {
         return studentRepository.save(student);
@@ -41,6 +40,13 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.findAll().stream()
                 .filter(e -> e.getAge() == age)
                 .collect(Collectors.toList());
+    }
 
+    public Collection<Student> findByAgeBetween(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
+    public Faculty findFacultyByStudent(long id) {
+        return studentRepository.getReferenceById(id).getFaculty();
     }
 }

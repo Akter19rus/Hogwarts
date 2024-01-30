@@ -1,24 +1,19 @@
 package ru.hogwarts.school.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.service.FacultyServiceImpl;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("faculty")
 public class FacultyController {
-    private final FacultyService facultyService;
-
-    public FacultyController(FacultyService facultyService) {
-        this.facultyService = facultyService;
-    }
+    private final FacultyServiceImpl facultyService;
 
     @GetMapping("{id}")
     public ResponseEntity<Faculty> getFacultyInfo(@PathVariable Long id) {
@@ -30,8 +25,19 @@ public class FacultyController {
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> getAllFacultys() {
-        return ResponseEntity.ok(facultyService.getAllFacultys());
+    public ResponseEntity<Collection<Faculty>> getAllFacultet() {
+        return ResponseEntity.ok(facultyService.getAllFacultet());
+    }
+
+    @GetMapping("color")
+    public ResponseEntity<Collection<Faculty>> findFacultyByColor(@RequestParam String color) {
+        return ResponseEntity.ok(facultyService.getColorFacultet(color));
+    }
+
+    @GetMapping("/byNameOrByColor")
+    public Collection<Faculty> getNameOrColor(@RequestParam(required = false) String name,
+                                              @RequestParam(required = false) String color) {
+        return facultyService.findFacultyByNameOrColor(name, color);
     }
 
     @PostMapping
@@ -49,13 +55,8 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteFaculty(@PathVariable long id) {
+    public ResponseEntity<Void> deleteFaculty(@PathVariable long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("color")
-    public Collection<Faculty> getColorFaculty(@PathVariable String color) {
-        return facultyService.getColorFacultys(color);
     }
 }
