@@ -1,7 +1,5 @@
 package ru.hogwarts.school.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +9,14 @@ import ru.hogwarts.school.service.StudentServiceImpl;
 
 import java.util.Collection;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("student")
 public class StudentController {
     private final StudentServiceImpl studentService;
+
+    public StudentController(StudentServiceImpl studentService) {
+        this.studentService = studentService;
+    }
 
     @GetMapping("{id}")
     public ResponseEntity<Student> getStudentInfo(@PathVariable Long id) {
@@ -71,12 +72,11 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteStudent(@PathVariable Long id) {
+    public void deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
-        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("age")
+    @GetMapping("/age/{age}")
     public Collection<Student> getAgeStudents(@PathVariable int age) {
         return studentService.getAgeStudent(age);
     }

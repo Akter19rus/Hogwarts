@@ -1,6 +1,5 @@
 package ru.hogwarts.school.controller;
 
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,11 +8,14 @@ import ru.hogwarts.school.service.FacultyServiceImpl;
 
 import java.util.Collection;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("faculty")
 public class FacultyController {
     private final FacultyServiceImpl facultyService;
+
+    public FacultyController(FacultyServiceImpl facultyService) {
+        this.facultyService = facultyService;
+    }
 
     @GetMapping("{id}")
     public ResponseEntity<Faculty> getFacultyInfo(@PathVariable Long id) {

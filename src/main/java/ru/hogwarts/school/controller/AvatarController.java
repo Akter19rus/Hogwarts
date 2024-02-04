@@ -1,6 +1,6 @@
 package ru.hogwarts.school.controller;
+
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,11 +14,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-@AllArgsConstructor
 @RestController
 @RequestMapping("avatar")
 public class AvatarController {
     private final AvatarServiceImpl avatarService;
+
+    public AvatarController(AvatarServiceImpl avatarService) {
+        this.avatarService = avatarService;
+    }
 
     @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadAvatar(@PathVariable Long id,

@@ -1,6 +1,5 @@
 package ru.hogwarts.school.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
@@ -10,11 +9,14 @@ import ru.hogwarts.school.repositories.StudentRepository;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Service
 public class StudentServiceImpl {
     @Autowired
     private final StudentRepository studentRepository;
+
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student createStudent(Student student) {
         return studentRepository.save(student);
