@@ -31,15 +31,21 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.getAllFacultet());
     }
 
-    @GetMapping("color")
-    public ResponseEntity<Collection<Faculty>> findFacultyByColor(@RequestParam String color) {
+    @GetMapping("/color")
+    public ResponseEntity<Faculty> findFacultyByColor(@RequestParam String color) {
         return ResponseEntity.ok(facultyService.getColorFacultet(color));
     }
 
     @GetMapping("/byNameOrByColor")
-    public Collection<Faculty> getNameOrColor(@RequestParam(required = false) String name,
+    public ResponseEntity<?> getNameOrColor(@RequestParam(required = false) String name,
                                               @RequestParam(required = false) String color) {
-        return facultyService.findFacultyByNameOrColor(name, color);
+        if (color != null && !color.isBlank()) {
+            return ResponseEntity.ok(facultyService.findFacultyByColor(color));
+        }
+        if (name != null && !name.isBlank()) {
+            return ResponseEntity.ok(facultyService.findFacultyByName(name));
+        }
+        return ResponseEntity.ok(facultyService.getAllFacultet());
     }
 
     @PostMapping

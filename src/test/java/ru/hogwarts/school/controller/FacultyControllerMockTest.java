@@ -116,16 +116,45 @@ public class FacultyControllerMockTest {
 
     @Test
     void getFacultyByColorTest() throws Exception {
-        Faculty faculty = new Faculty(ID, NAME, COLOR, null);
-        when(facultyRepository.findFacultyByColorIgnoreCase(COLOR)).thenReturn(faculty);
+        when(facultyRepository
+                .findFacultyByColorIgnoreCase(any(String.class)))
+                .thenReturn(faculty);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/faculty/color?color=" + COLOR)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(ID))
-                .andExpect(jsonPath("$[0].name").value(NAME))
-                .andExpect(jsonPath("$[0].color").value(COLOR));
+                .andExpect(jsonPath("$.id").value(ID))
+                .andExpect(jsonPath("$.name").value(NAME))
+                .andExpect(jsonPath("$.color").value(COLOR));
+    }
+
+    @Test
+    void findFacultyByColorOrNameIgnoreCase() throws Exception {
+        when(facultyRepository
+                .findFacultyByNameIgnoreCase(any(String.class)))
+                .thenReturn(faculty);
+        when(facultyRepository
+                .findFacultyByColorIgnoreCase(any(String.class)))
+                .thenReturn(faculty);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculty/byNameOrByColor?name=" + NAME)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(ID))
+                .andExpect(jsonPath("$.name").value(NAME))
+                .andExpect(jsonPath("$.color").value(COLOR));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/faculty/byNameOrByColor?color=" + COLOR)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(ID))
+                .andExpect(jsonPath("$.name").value(NAME))
+                .andExpect(jsonPath("$.color").value(COLOR));
     }
 
     @Test
