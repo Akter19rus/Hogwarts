@@ -1,6 +1,7 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +18,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
-@Component("Avatar")
 @Service
 @Transactional
 public class AvatarServiceImpl {
@@ -80,5 +81,10 @@ public class AvatarServiceImpl {
 
     private String getExtensions(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
+
+    public Collection<Avatar> getPageAvatar(Integer number, Integer size) {
+        PageRequest pageRequest = PageRequest.of(number - 1, size);
+        return avatarRepository.findAll(pageRequest).getContent();
     }
 }
