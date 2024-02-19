@@ -40,7 +40,7 @@ public class FacultyController {
     public ResponseEntity<?> getNameOrColor(@RequestParam(required = false) String name,
                                               @RequestParam(required = false) String color) {
         if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.findFacultyByColor(color));
+            return ResponseEntity.ok(facultyService.getColorFacultet(color));
         }
         if (name != null && !name.isBlank()) {
             return ResponseEntity.ok(facultyService.findFacultyByName(name));
