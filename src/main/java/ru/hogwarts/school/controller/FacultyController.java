@@ -4,19 +4,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.service.FacultyServiceImpl;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("faculty")
 public class FacultyController {
-    private final FacultyService facultyService;
+    private final FacultyServiceImpl facultyService;
 
-    public FacultyController(FacultyService facultyService) {
+    public FacultyController(FacultyServiceImpl facultyService) {
         this.facultyService = facultyService;
     }
 
@@ -30,8 +27,25 @@ public class FacultyController {
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> getAllFacultys() {
-        return ResponseEntity.ok(facultyService.getAllFacultys());
+    public ResponseEntity<Collection<Faculty>> getAllFacultet() {
+        return ResponseEntity.ok(facultyService.getAllFacultet());
+    }
+
+    @GetMapping("/color")
+    public ResponseEntity<Faculty> findFacultyByColor(@RequestParam String color) {
+        return ResponseEntity.ok(facultyService.getColorFacultet(color));
+    }
+
+    @GetMapping("/byNameOrByColor")
+    public ResponseEntity<?> getNameOrColor(@RequestParam(required = false) String name,
+                                              @RequestParam(required = false) String color) {
+        if (color != null && !color.isBlank()) {
+            return ResponseEntity.ok(facultyService.getColorFacultet(color));
+        }
+        if (name != null && !name.isBlank()) {
+            return ResponseEntity.ok(facultyService.findFacultyByName(name));
+        }
+        return ResponseEntity.ok(facultyService.getAllFacultet());
     }
 
     @PostMapping
@@ -49,13 +63,8 @@ public class FacultyController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteFaculty(@PathVariable long id) {
+    public ResponseEntity<Void> deleteFaculty(@PathVariable long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("color")
-    public Collection<Faculty> getColorFaculty(@PathVariable String color) {
-        return facultyService.getColorFacultys(color);
     }
 }
