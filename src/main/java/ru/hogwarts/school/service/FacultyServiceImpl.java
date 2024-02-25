@@ -8,7 +8,10 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 public class FacultyServiceImpl {
@@ -53,5 +56,24 @@ public class FacultyServiceImpl {
     public Faculty findFacultyByName(String name) {
         logger.info("Was invoked method for find faculty by name");
         return facultyRepository.findFacultyByNameIgnoreCase(name);
+    }
+
+    public String getLongestName() {
+        return facultyRepository.findAll().stream()
+                .max(Comparator.comparingInt(f -> f.getName().length()))
+                .get().getName();
+    }
+
+    public int summa() {
+        return Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, Integer::sum);
+    }
+
+    public int parallelSumma() {
+        return IntStream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .parallel()
+                .sum();
     }
 }

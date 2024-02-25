@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("student")
+@RequestMapping("students")
 public class StudentController {
     private final StudentServiceImpl studentService;
 
@@ -34,7 +34,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("/findBetween")
+    @GetMapping("/find-between")
     public ResponseEntity<?> findStudentByAgeBetween(@RequestParam(required = false) int min,
                                                      @RequestParam(required = false) int max) {
         if (min > max) {
@@ -82,18 +82,28 @@ public class StudentController {
         return studentService.getAgeStudent(age);
     }
 
-    @GetMapping("/getAllByInSchool")
+    @GetMapping("/counts")
     public ResponseEntity<Integer> getAllByInSchool() {
         return ResponseEntity.ok(studentService.getAllByInSchool());
     }
 
-    @GetMapping("/getAverageAgeStudent")
+    @GetMapping("/average-age")
     public ResponseEntity<Integer> getAverageAgeStudent() {
         return ResponseEntity.ok(studentService.getAverageAgeStudent());
     }
 
-    @GetMapping("/getLatestFiveStudent")
+    @GetMapping("/latest-five")
     public ResponseEntity<List<Student>> getLatestFiveStudent() {
         return ResponseEntity.ok(studentService.getLatestFiveStudent());
+    }
+
+    @GetMapping("/only-name-letter-A")
+    public ResponseEntity<Collection<Student>> getStudentsLetterA(){
+        return ResponseEntity.ok(studentService.getStudentsLetterA());
+    }
+
+    @GetMapping("/only-middle-age")
+    public ResponseEntity<Double> getMiddleAgeByStudents(){
+        return ResponseEntity.ok(studentService.getMiddleAgeByStudents());
     }
 }

@@ -67,4 +67,19 @@ public class FacultyController {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/longest-name")
+    public ResponseEntity<String> getLongestName() {
+        return ResponseEntity.ok(facultyService.getLongestName());
+    }
+
+    @GetMapping("/sum")
+    public ResponseEntity<Integer> getSummaTime() {
+        return ResponseEntity.ok(facultyService.summa());
+
+    }
+    @GetMapping("/parallel-sum")
+    public ResponseEntity<Integer> getSummaTimeParallel(){
+        return ResponseEntity.ok(facultyService.parallelSumma());
+    }
 }
