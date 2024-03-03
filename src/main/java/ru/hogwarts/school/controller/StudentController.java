@@ -106,4 +106,14 @@ public class StudentController {
     public ResponseEntity<Double> getMiddleAgeByStudents(){
         return ResponseEntity.ok(studentService.getMiddleAgeByStudents());
     }
+
+    @GetMapping("/print-parallel")
+    public void getNameStudent() {
+        studentService.printNameParallel();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void getNameStudentSynchronized() {
+        studentService.printNameParallelSynchronized();
+    }
 }

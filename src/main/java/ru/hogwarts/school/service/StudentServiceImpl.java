@@ -13,6 +13,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.hibernate.loader.internal.AliasConstantsHelper.get;
+
 @Service
 public class StudentServiceImpl {
     Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
@@ -43,7 +45,7 @@ public class StudentServiceImpl {
         studentRepository.deleteById(id);
     }
 
-    public Collection<Student> getAllStudents() {
+    public List<Student> getAllStudents() {
         logger.info("Was invoked method for get all student");
         return studentRepository.findAll();
     }
@@ -93,5 +95,39 @@ public class StudentServiceImpl {
                 .mapToDouble(Student::getAge)
                 .average()
                 .orElse(0);
+    }
+
+    public void printName(int i) {
+        System.out.println(getAllStudents().get(i).getName());
+    }
+
+    public void printNameParallel() {
+        printName(0);
+        new Thread(() -> {
+            printName(2);
+            printName(3);
+        }).start();
+        new Thread(() -> {
+            printName(4);
+            printName(5);
+        }).start();
+        printName(1);
+    }
+
+    public synchronized void printNameSynchronized(int i) {
+        System.out.println(getAllStudents().get(i).getName());
+    }
+
+    public void printNameParallelSynchronized() {
+        printNameSynchronized(0);
+        new Thread(() -> {
+            printNameSynchronized(2);
+            printNameSynchronized(3);
+        }).start();
+        new Thread(() -> {
+            printNameSynchronized(4);
+            printNameSynchronized(5);
+        }).start();
+        printNameSynchronized(1);
     }
 }
