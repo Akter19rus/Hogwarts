@@ -3,17 +3,19 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.service.StudentServiceImpl;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
-@RequestMapping("student")
+@RequestMapping("students")
 public class StudentController {
-    private final StudentService studentService;
+    private final StudentServiceImpl studentService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentServiceImpl studentService) {
         this.studentService = studentService;
     }
 
@@ -32,6 +34,29 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
+    @GetMapping("/find-between")
+    public ResponseEntity<?> findStudentByAgeBetween(@RequestParam(required = false) int min,
+                                                     @RequestParam(required = false) int max) {
+        if (min > max) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(studentService.findByAgeBetween(min, max));
+    }
+
+    @GetMapping("/faculty/{id}")
+    public ResponseEntity<Faculty> findFacultyById(@PathVariable long id) {
+        Student student = studentService.findStudent(id);
+        Faculty faculty = studentService.findFacultyByStudent(id);
+
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (faculty == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(faculty);
+    }
+
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
@@ -48,13 +73,47 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteStudent(@PathVariable Long id) {
+    public void deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
-        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("age")
+    @GetMapping("/age/{age}")
     public Collection<Student> getAgeStudents(@PathVariable int age) {
         return studentService.getAgeStudent(age);
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<Integer> getAllByInSchool() {
+        return ResponseEntity.ok(studentService.getAllByInSchool());
+    }
+
+    @GetMapping("/average-age")
+    public ResponseEntity<Integer> getAverageAgeStudent() {
+        return ResponseEntity.ok(studentService.getAverageAgeStudent());
+    }
+
+    @GetMapping("/latest-five")
+    public ResponseEntity<List<Student>> getLatestFiveStudent() {
+        return ResponseEntity.ok(studentService.getLatestFiveStudent());
+    }
+
+    @GetMapping("/only-name-letter-A")
+    public ResponseEntity<Collection<Student>> getStudentsLetterA(){
+        return ResponseEntity.ok(studentService.getStudentsLetterA());
+    }
+
+    @GetMapping("/only-middle-age")
+    public ResponseEntity<Double> getMiddleAgeByStudents(){
+        return ResponseEntity.ok(studentService.getMiddleAgeByStudents());
+    }
+
+    @GetMapping("/print-parallel")
+    public void getNameStudent() {
+        studentService.printNameParallel();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void getNameStudentSynchronized() {
+        studentService.printNameParallelSynchronized();
     }
 }
